@@ -6,7 +6,7 @@
 /*   By: juandrie <juandrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 11:54:53 by juandrie          #+#    #+#             */
-/*   Updated: 2023/06/01 11:59:02 by juandrie         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:48:35 by juandrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ char	*ft_strchr(char *s, int c)
 	i = 0;
 	if (!s)
 		return (0);
-	if (c == '\0')
-		return ((char *) s + i);
 	while (s[i] != '\0')
 	{
 		if (s[i] == (char) c)
 			return ((char *) s + i);
 		i++;
 	}
+	if (c == '\0')
+		return ((char *) s + i);
 	return (0);
 }
 
