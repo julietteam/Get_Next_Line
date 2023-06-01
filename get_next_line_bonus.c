@@ -6,7 +6,7 @@
 /*   By: juandrie <juandrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:41:31 by juandrie          #+#    #+#             */
-/*   Updated: 2023/06/01 10:35:23 by juandrie         ###   ########.fr       */
+/*   Updated: 2023/06/01 12:31:00 by juandrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ char	*ft_clean(char *stash)
 	}
 	new_stash = (char *)malloc(sizeof(char) * (ft_strlen(stash) - i));
 	if (!new_stash)
+	{
+		free(stash);
 		return (NULL);
+	}
 	i++;
 	c = 0;
 	while (stash[i])
@@ -82,8 +85,8 @@ char	*ft_read_and_save(int fd, char *stash)
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 		if (read_bytes == -1)
 		{
-			free(buf);
-			free(stash);
+			free (buf);
+			free (stash);
 			return (NULL);
 		}
 		buf[read_bytes] = '\0';
@@ -111,6 +114,11 @@ char	*get_next_line(int fd)
 	if (!stash[fd])
 		return (NULL);
 	line = ft_get_line(stash[fd]);
+	if (!line)
+	{
+		free (stash[fd]);
+		return (NULL);
+	}
 	stash[fd] = ft_clean(stash[fd]);
 	return (line);
 }

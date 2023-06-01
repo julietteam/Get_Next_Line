@@ -6,7 +6,7 @@
 /*   By: juandrie <juandrie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 16:31:51 by juandrie          #+#    #+#             */
-/*   Updated: 2023/06/01 11:08:35 by juandrie         ###   ########.fr       */
+/*   Updated: 2023/06/01 12:31:10 by juandrie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ char	*ft_clean(char *stash)
 	i++;
 	c = 0;
 	while (stash[i])
-	{
 		new_stash[c++] = stash[i++];
-	}
 	new_stash[c] = '\0';
 	free (stash);
 	return (new_stash);
@@ -85,13 +83,14 @@ char	*ft_read_and_save(int fd, char *stash)
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 		if (read_bytes == -1)
 		{
-			free(buf);
+			free (buf);
+			free (stash);
 			return (NULL);
 		}
 		buf[read_bytes] = '\0';
 		stash = ft_strjoin(stash, buf);
 	}
-	free(buf);
+	free (buf);
 	return (stash);
 }
 
@@ -102,10 +101,22 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!stash)
+	{
+		stash = malloc (sizeof(char));
+		if (!stash)
+			return (NULL);
+		stash[0] = '\0';
+	}
 	stash = ft_read_and_save(fd, stash);
 	if (!stash)
 		return (NULL);
 	line = ft_get_line(stash);
+	if (!line)
+	{
+		free (stash);
+		return (NULL);
+	}
 	stash = ft_clean(stash);
 	return (line);
 }
